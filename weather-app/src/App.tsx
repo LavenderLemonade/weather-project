@@ -1,3 +1,4 @@
+import SearchLocation from "./SearchLocation";
 
 function App() {
 
@@ -5,8 +6,7 @@ function App() {
 
     <div>
       <h1 className="text-3xl"> Weather in Your Location! </h1>
-      <input className="outline outline-black" />
-      <button className="text-xl"> Search </button>
+      <SearchLocation />
     </div>
 
 

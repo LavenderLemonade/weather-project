@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import useData from './useData';
 
 
 export default function SearchLocation() {
@@ -28,19 +27,31 @@ export default function SearchLocation() {
     }
 
     async function getLocationData(searchQuery: string) {
-        await axios.get(baseLocURL + encodeURIComponent(searchQuery).replace(/%20/g, "+") + locFormatDetails).then((response) => {
+        const data = await axios.get(baseLocURL + encodeURIComponent(searchQuery).replace(/%20/g, "+") + locFormatDetails).then((response) => {
             let newLoc: number[] = [response.data[0].lat, response.data[0].lon];
-            setCurrentLoc(newLoc);
-            getCurrentWeather(currentLoc.toString());
+            if (newLoc != null) {
+                setCurrentLoc(newLoc);
+                getCurrentWeather(currentLoc.toString());
+            }
+
         })
+    }
 
+    async function findLongAndLat(search: string): Promise<Array<number>> {
+        try {
+            const data = await axios.get(baseLocURL + encodeURIComponent(search).replace(/%20/g, "+") + locFormatDetails);
+            return [data.data[0].lat, data.data[0].lon];
+        }
 
+        catch (error) {
+            return [];
+        }
     }
 
     return (
         <div>
             <input className="outline outline-black" value={search} onChange={e => setSearch(e.target.value)} />
-            <button className="text-xl" onClick={() => { getLocationData(search) }}> Search </button>
+            <button className="text-xl" onClick={() => { findLongAndLat(search).then((data) => { setCurrentLoc(data); }) }}> Search </button>
 
             <h1> Current Lat: {currentLoc[0]} </h1>
             <h1> Current Long: {currentLoc[1]} </h1>

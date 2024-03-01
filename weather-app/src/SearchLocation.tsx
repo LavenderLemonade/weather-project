@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import useData from './useData';
 
 
 export default function SearchLocation() {
@@ -13,9 +14,9 @@ export default function SearchLocation() {
     let locFormatDetails = "&format=json&addressdetails=1";
     let baseWeatherURL = 'https://api.weather.gov/points/';
 
-    function getCurrentWeather(location: string) {
+    async function getCurrentWeather(location: string) {
         console.log(encodeURIComponent(location));
-        axios.get(baseWeatherURL + encodeURIComponent(location).replace(/%20/g, ",")).then((response) => {
+        await axios.get(baseWeatherURL + encodeURIComponent(location).replace(/%20/g, ",")).then((response) => {
             setCurrentForecast(response.data.properties.forecast);
         }).then(
             () => axios.get(currentForecast).then((response) => {
@@ -26,13 +27,14 @@ export default function SearchLocation() {
 
     }
 
-    function getLocationData(searchQuery: string) {
-        axios.get(baseLocURL + encodeURIComponent(searchQuery).replace(/%20/g, "+") + locFormatDetails).then((response) => {
+    async function getLocationData(searchQuery: string) {
+        await axios.get(baseLocURL + encodeURIComponent(searchQuery).replace(/%20/g, "+") + locFormatDetails).then((response) => {
             let newLoc: number[] = [response.data[0].lat, response.data[0].lon];
             setCurrentLoc(newLoc);
+            getCurrentWeather(currentLoc.toString());
         })
 
-        getCurrentWeather(currentLoc.toString());
+
     }
 
     return (

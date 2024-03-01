@@ -6,22 +6,26 @@ import axios from 'axios'
 export default function SearchLocation() {
 
     const [search, setSearch] = useState('');
+    const [currentLoc, setCurrentLoc] = useState<Array<number>>([])
 
-    class LocationInfo {
+    let baseLocURL = 'https://nominatim.openstreetmap.org/search?q=';
+    let locFormatDetails = "&format=json&addressdetails=1";
 
-        Lat: number;
-        Long: number;
 
-        constructor(lat: number, long: number) {
-            this.Lat = lat;
-            this.Long = long;
-        }
+    function getLocationData(searchQuery: string) {
+        axios.get(baseLocURL + encodeURIComponent(searchQuery).replace(/%20/g, "+") + locFormatDetails).then((response) => {
+            let newLoc: number[] = [response.data[0].lat, response.data[0].lon];
+            setCurrentLoc(newLoc);
+        })
     }
 
     return (
         <div>
-            <input className="outline outline-black" value={search} />
-            <button className="text-xl"> Search </button>
+            <input className="outline outline-black" value={search} onChange={e => setSearch(e.target.value)} />
+            <button className="text-xl" onClick={() => { getLocationData(search) }}> Search </button>
+
+            <h1> Current Lat: {currentLoc[0]} </h1>
+            <h1> Current Long: {currentLoc[1]} </h1>
         </div>
     )
 }

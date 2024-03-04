@@ -12,6 +12,14 @@ export default function SearchLocation() {
     let locFormatDetails = "&format=json&addressdetails=1";
     let baseWeatherURL = 'https://api.weather.gov/points/';
 
+    interface IWeather {
+        name: string,
+        temp: number,
+        windSpeed: number,
+        forecast: string,
+        detailedForecast: string
+    }
+
 
     async function findWeatherConditions(url: string): Promise<Array<Object>> {
         try {
@@ -54,7 +62,7 @@ export default function SearchLocation() {
                     return findWeatherConditionData(data.toString());
                 }).then((response) => {
                     return findWeatherConditions(response.properties.forecast);
-                }).then((data) => { console.log(data) });
+                }).then((data) => { console.log(data[0]) });
             }}> Search </button>
 
             <h1> Current Lat: {currentLoc[0]} </h1>

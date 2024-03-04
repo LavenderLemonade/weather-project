@@ -7,7 +7,7 @@ export default function SearchLocation() {
 
     const [search, setSearch] = useState('');
     const [currentLoc, setCurrentLoc] = useState<Array<number>>([]);
-    const [currentWeatherValues, setCurrentWeatherValues] = useState<Array<WeatherObject>>();
+    const [currentWeatherValues, setCurrentWeatherValues] = useState<Array<WeatherObject>>([]);
 
     let baseLocURL = 'https://nominatim.openstreetmap.org/search?q=';
     let locFormatDetails = "&format=json&addressdetails=1";
@@ -32,6 +32,10 @@ export default function SearchLocation() {
 
     function getObjectDetails(data: any) {
         return new WeatherObject(data.name, data.temperature, data.windSpeed, data.shortForecast, data.detailedForecast);
+    }
+
+    function addObject(data: WeatherObject) {
+        return setCurrentWeatherValues((oldValues) => [...oldValues, data]);
     }
 
     async function findWeatherConditions(url: string): Promise<Array<Object>> {

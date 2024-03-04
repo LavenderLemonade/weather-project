@@ -6,6 +6,7 @@ import axios from 'axios'
 export default function SearchLocation() {
 
     const [search, setSearch] = useState('');
+    const [theError, setError] = useState('');
     const [currentLoc, setCurrentLoc] = useState<Array<number>>([]);
     const [currentWeatherValues, setCurrentWeatherValues] = useState<Array<WeatherObject>>([]);
 
@@ -55,7 +56,8 @@ export default function SearchLocation() {
         }
 
         catch (error) {
-            return '';
+            setError(theError + error);
+            return 'ERROR';
         }
     }
 
@@ -66,6 +68,7 @@ export default function SearchLocation() {
         }
 
         catch (error) {
+            setError(theError + error);
             return [];
         }
     }
@@ -73,7 +76,7 @@ export default function SearchLocation() {
     return (
         <div>
             <input className="outline outline-black" value={search} onChange={e => setSearch(e.target.value)} />
-            <button className="text-xl" onClick={() => {
+            <button className="text-xl pl-4" onClick={() => {
                 findLongAndLat(search).then((data) => {
                     setCurrentLoc(data);
                     return findWeatherConditionData(data.toString());
@@ -87,16 +90,15 @@ export default function SearchLocation() {
                 });
             }}> Search </button>
 
-            <h1> Current Lat: {currentLoc[0]} </h1>
-            <h1> Current Long: {currentLoc[1]} </h1>
+            {theError && <h1> {theError} </h1>}
 
-            {currentWeatherValues && currentWeatherValues.map((weather) =>
+            {currentWeatherValues && currentLoc && currentWeatherValues.map((weather) =>
                 <div>
-                    <h4> {weather.name} </h4>
-                    <h4> {weather.temp} </h4>
-                    <h4> {weather.windSpeed} </h4>
-                    <h4> {weather.forecast} </h4>
-                    <h4> {weather.detailedForecast} </h4>
+                    <h4> {weather.name} the weather is going to be </h4>
+                    <h4> {weather.temp} degrees Farenheit </h4>
+                    <h4> with wind speeds of {weather.windSpeed} </h4>
+                    <h4> the short forecast is that the weather will be {weather.forecast} </h4>
+                    <h4> the details are that the weather will be: {weather.detailedForecast} </h4>
                 </div>
 
             )}

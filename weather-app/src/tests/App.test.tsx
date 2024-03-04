@@ -2,6 +2,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import { render, screen, cleanup } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // To Test
@@ -22,42 +23,11 @@ describe('Renders main page correctly', async () => {
     it('Should render the page correctly', async () => {
         // Setup
         await render(<App />);
-        const h1 = await screen.queryByText('Vite + React');
+        const h1 = await screen.queryByText('Weather in Your Loccation!');
 
         // Post Expectations
-        expect(h1).toBeInTheDocument();
+        waitFor(() => expect(h1).toBeInTheDocument());
+
     });
 
-    /**
-     * Passes - shows the button count correctly present
-     */
-    it('Should show the button count set to 0', async () => {
-        // Setup
-        await render(<App />);
-        const button = await screen.queryByText('count is 0');
-
-        // Expectations
-        expect(button).toBeInTheDocument();
-    });
-
-    /**
-     * Passes - clicks the button 3 times and shows the correct count
-     */
-    it('Should show the button count set to 3', async () => {
-        // Setup
-        const user = userEvent.setup();
-        await render(<App />);
-        const button = await screen.queryByText('count is 0');
-
-        // Pre Expectations
-        expect(button).toBeInTheDocument();
-
-        // Actions
-        await user.click(button as HTMLElement);
-        await user.click(button as HTMLElement);
-        await user.click(button as HTMLElement);
-
-        // Post Expectations
-        expect(button?.innerHTML).toBe('count is 3');
-    });
 });

@@ -20,6 +20,14 @@ export default function SearchLocation() {
         detailedForecast: string
     }
 
+    class WeatherObject implements IWeather {
+        name = '';
+        temp = 0;
+        windSpeed = 0;
+        forecast = '';
+        detailedForecast = '';
+    }
+
 
     async function findWeatherConditions(url: string): Promise<Array<Object>> {
         try {

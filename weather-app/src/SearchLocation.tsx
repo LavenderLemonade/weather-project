@@ -79,7 +79,12 @@ export default function SearchLocation() {
                     return findWeatherConditionData(data.toString());
                 }).then((response) => {
                     return findWeatherConditions(response.properties.forecast);
-                }).then((data) => { console.log(getObjectDetails(data[0])) });
+                }).then((data) => {
+                    setCurrentWeatherValues([]);
+                    addObject(getObjectDetails(data[0]));
+                    addObject(getObjectDetails(data[1]));
+                    console.log(currentWeatherValues);
+                });
             }}> Search </button>
 
             <h1> Current Lat: {currentLoc[0]} </h1>

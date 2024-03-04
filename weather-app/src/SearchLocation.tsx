@@ -6,7 +6,8 @@ import axios from 'axios'
 export default function SearchLocation() {
 
     const [search, setSearch] = useState('');
-    const [currentLoc, setCurrentLoc] = useState<Array<number>>([])
+    const [currentLoc, setCurrentLoc] = useState<Array<number>>([]);
+    const [currentWeatherValues, setCurrentWeatherValues] = useState<Array<WeatherObject>>();
 
     let baseLocURL = 'https://nominatim.openstreetmap.org/search?q=';
     let locFormatDetails = "&format=json&addressdetails=1";

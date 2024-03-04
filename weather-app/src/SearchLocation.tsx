@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { formHelperTextClasses } from '@mui/material';
 
 
 export default function SearchLocation() {
@@ -30,7 +29,9 @@ export default function SearchLocation() {
         }
     }
 
-
+    function getObjectDetails(data: any) {
+        return new WeatherObject(data.name, data.temperature, data.windSpeed, data.shortForecast, data.detailedForecast);
+    }
 
     async function findWeatherConditions(url: string): Promise<Array<Object>> {
         try {
@@ -73,7 +74,7 @@ export default function SearchLocation() {
                     return findWeatherConditionData(data.toString());
                 }).then((response) => {
                     return findWeatherConditions(response.properties.forecast);
-                }).then((data) => { console.log(data[0]) });
+                }).then((data) => { console.log(getObjectDetails(data[0])) });
             }}> Search </button>
 
             <h1> Current Lat: {currentLoc[0]} </h1>

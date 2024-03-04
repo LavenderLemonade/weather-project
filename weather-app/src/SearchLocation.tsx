@@ -89,6 +89,17 @@ export default function SearchLocation() {
 
             <h1> Current Lat: {currentLoc[0]} </h1>
             <h1> Current Long: {currentLoc[1]} </h1>
+
+            {currentWeatherValues && currentWeatherValues.map((weather) =>
+                <div>
+                    <h4> {weather.name} </h4>
+                    <h4> {weather.temp} </h4>
+                    <h4> {weather.windSpeed} </h4>
+                    <h4> {weather.forecast} </h4>
+                    <h4> {weather.detailedForecast} </h4>
+                </div>
+
+            )}
         </div>
     )
 }

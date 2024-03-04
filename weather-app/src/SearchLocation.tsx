@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import { formHelperTextClasses } from '@mui/material';
 
 
 export default function SearchLocation() {
@@ -12,21 +13,23 @@ export default function SearchLocation() {
     let locFormatDetails = "&format=json&addressdetails=1";
     let baseWeatherURL = 'https://api.weather.gov/points/';
 
-    interface IWeather {
-        name: string,
-        temp: number,
-        windSpeed: number,
-        forecast: string,
-        detailedForecast: string
+    class WeatherObject {
+
+        name: string;
+        temp: number;
+        windSpeed: number;
+        forecast: string;
+        detailedForecast: string;
+
+        constructor(name: string, temp: number, wind: number, fore: string, deet: string) {
+            this.name = name;
+            this.temp = temp;
+            this.windSpeed = wind;
+            this.forecast = fore;
+            this.detailedForecast = deet;
+        }
     }
 
-    class WeatherObject implements IWeather {
-        name = '';
-        temp = 0;
-        windSpeed = 0;
-        forecast = '';
-        detailedForecast = '';
-    }
 
 
     async function findWeatherConditions(url: string): Promise<Array<Object>> {
